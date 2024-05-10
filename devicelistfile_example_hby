@@ -1,0 +1,8 @@
+[A4:C1:38:DD:EE:FF]
+sensorname=HBY_bedroom
+topic=hby/bedroom
+
+[A4:C1:38:DD:EE:F3]
+sensorname=HBY_livingroom
+topic=hby/livingroom
+

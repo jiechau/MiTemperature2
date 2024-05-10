@@ -1,4 +1,7 @@
+config_secrets.txt
+devicelistfile_hby
 venv
 .vscode
+logs/
 __pycache__/
 *.py[cod]
