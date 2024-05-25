@@ -52,5 +52,14 @@ Debug:
 ./LYWSD03MMC.py -p
 curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&precision=s --data-binary "sensor_hby,sensorname=HBY_livingroom temperature=28.3,humidity=77,voltage=2.95"
 
+More info about device, Xiaomi Mijia (LYWSD03MMC):
+sensor firmware update, use the latest version:
+https://github.com/pvvx/ATC_MiThermometer 
+find correct device, write down the id. connect, activate,
+flash custom firmware v4.3
+Advertising interval 2.5sec -> 5sec 
+Measure interval 4x adv => 8*adv
+min LCD refresh rate: 2.45 -> 10 sec
+advertising type:  PVVX(custom, temp two digits after dot, also use later MiTemperature2)
 
 
