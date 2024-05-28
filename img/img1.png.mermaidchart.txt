@@ -1,0 +1,23 @@
+graph TB
+ 
+  %% img1
+  subgraph subgraph_sensors["Bluetooth Thermometer LYWSD03MMC sensors (7)"]
+    direction TB
+    B1["<img src="https://i.imgur.com/9TPsqJc.jpg">"]
+    B2["<img src="https://i.imgur.com/9TPsqJc.jpg">"]
+    B3["<img src="https://i.imgur.com/9TPsqJc.jpg">"]
+    B4["<img src="https://i.imgur.com/9TPsqJc.jpg">"]
+    M1["<img src="https://i.imgur.com/2LVKUXv.png">"]
+    M2["<img src="https://i.imgur.com/2LVKUXv.png">"]
+    M3["<img src="https://i.imgur.com/2LVKUXv.png">"]
+    M4["<img src="https://i.imgur.com/2LVKUXv.png">"]
+
+
+    B1 -- broadcast --> M1
+    B2 -- broadcast --> M2
+    B3 -- broadcast --> M3
+    B4 -- broadcast --> M4
+
+   end
+ 
+
