@@ -183,7 +183,7 @@ http://<ip>:3000/api/health
     - you might need to do some tweak
 - this is what you got at last:
 
-![from repo](img/img0.png)
+![from repo](img/img3.png)
 
 - in case you need to reset admin password (default admin/admin), attach to your grafana container, issue cli command:
 ```bash
