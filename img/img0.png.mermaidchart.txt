@@ -1,0 +1,35 @@
+flowchart LR
+  direction LR
+
+
+    subgraph subgraph_sensors["Thermometer LYWSD03MMC (7)"]
+        direction TB
+        B1["<img src="https://i.imgur.com/9TPsqJc.jpg">"]
+        M1["<img src="https://i.imgur.com/2LVKUXv.png">"]
+        B1 -- broadcast --> M1
+    end
+
+    subgraph subgraph_pi["Raspberry Pi (1)(2)(3)"]
+    direction LR
+        AA["<img src='https://i.imgur.com/HzO9icW.png' />"]
+
+        subgraph LR subgraph_proc["MiTemperature2 (4)(5)(6)"]
+            Mp["<img src='https://i.imgur.com/2LVKUXv.png' />"]
+        end
+    end
+
+    subgraph subgraph_influxdb["influxdb (8)"]
+        DD["<img src='https://i.imgur.com/QNdjg4j.png'>"]
+    end
+
+    subgraph subgraph_gf["grafana (8)"]
+        EE["<img src='https://i.imgur.com/jOVvghA.png'>"]
+    end
+
+   subgraph_sensors -.-> subgraph_pi
+    subgraph_pi --> subgraph_influxdb
+    subgraph_influxdb -.-> subgraph_gf
+
+
+
+

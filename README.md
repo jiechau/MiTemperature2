@@ -11,14 +11,15 @@ https://github.com/JsBergbau/MiTemperature2
 
 # about this MiTemperature2
 
-- LYWSD03MMC.sh (it's python program, running on a Raspberry Pi, scan bt signals, save to influx db)
+- LYWSD03MMC.sh (it's python program, running on a Raspberry Pi, scan bt signals, send to influxdb)
+- config and set up every thermometer (7)
 - setting up Raspberry Pi (1)
 - install necessary packages (incl. python) (2)
-- scan bt signals, write down, ready to update to 'devicelistfile_hby' (3) 
+- manually scan bt signals, write down, ready to update to 'devicelistfile_hby' (3) 
 - use user account to setup python env and config MiTemperature2 (4)(5)
 - run the program LYWSD03MMC.sh (6)
 
-![from repo](img/img2.png)
+![from repo](img/img0.png)
 
 
 ### (1) Raspberry Pi Imager
@@ -66,7 +67,7 @@ cd MiTemperature2
 cp devicelistfile_example_hby devicelistfile_hby
 vi devicelistfile_hby # the bt address found in (3)
 cp config_secrets_example_MiTemperature2.txt config_secrets.txt
-vi config_secrets.txt # your secret info about influxdb
+vi config_secrets.txt # your secret info about influxdb in (8)
 ```
 
 ### (6) user run
@@ -90,7 +91,110 @@ Measure interval 4x adv => 8*adv
 min LCD refresh rate: 2.45 -> 10 sec
 advertising type:  PVVX(custom, temp two digits after dot, also use later MiTemperature2)
 ```
-![from repo](img/img1.png)
+
+### (8) influxDB and Grafana
+
+- install influxDB and Grafana, and create db...
+- reference: https://simonhearne.com/2020/pi-influx-grafana/
+
+#### influxDB
+
+- i use influxdb 1.x version (not 2.x)
+- only need to backup:
+    - $HOME/influxdb/data
+    - $HOME/influxdb/config/influxdb.conf
+- use docker, influxdb:1.8
+```bash
+docker run -d \
+  -p 8086:8086 \
+  -v $HOME/influxdb/data:/var/lib/influxdb \
+  -v $HOME/influxdb/config/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
+  -e INFLUXDB_DB=home \
+  -e INFLUXDB_ADMIN_USER=grafana \
+  -e INFLUXDB_ADMIN_PASSWORD=grafana \
+  -e INFLUXDB_USER=grafana \
+  -e INFLUXDB_USER_PASSWORD=grafana \
+  --name influxdb_18 \
+  influxdb:1.8 -config /etc/influxdb/influxdb.conf
+```
+- attach to container to create db and user account (for LYWSD03MMC to insert data)
+```
+influx # cli 
+>
+create database home
+use home
+create user grafana with password 'grafana' with all privileges
+grant all privileges on home to grafana
+show users
+
+user admin
+---- -----
+grafana true
+
+or
+SET PASSWORD FOR "grafana" = 'grafana'
+```
+
+- test insert data
+```bash
+curl -i -XPOST 'http://<ip>:8086/write?db=home' \
+--user 'grafana:grafana' \
+--data-binary 'sensor_hby,sensorname=HBY_bedroom temperature=25.5,humidity=68,voltage=2.998' 
+```
+
+#### Grafana
+
+- i use docker, grafana:10.4.2
+- only need to backup:
+    - $HOME/grafana/lib
+    - $HOME/grafana/etc
+```bash
+cd $HOME/grafana
+chmod -R 777 etc
+chmod -R 777 lib
+```
+```bash
+docker run -d \
+  --name=grafana_10.4.2 \
+  -p 3000:3000 \
+  -v $HOME/grafana/lib:/var/lib/grafana \
+  -v $HOME/grafana/etc:/etc/grafana \
+  grafana/grafana:10.4.2
+```
+
+- ui
+```
+http://<ip>:3000/
+```
+
+- test
+```
+http://<ip>:3000/api/health
+```
+
+- establish data connection to inflxdb
+    - use port 3000 ui, login in, establish data connection by
+    - Home > Connections > Add new connection. Search for 'InfluxDB', then 'Add new data source'
+    - fill all necessary fields, incl. Database: home, User:grafana, Password:<pass>
+- build a new dashboard from this data source
+    - go Grafana public Dashboard library https://grafana.com/grafana/dashboards/
+    - search for 'xiaomi', there are some, i use Dashboard ID: 15853 
+    - Home > Dashboards > New dashboard, 'Import a dashboard', input the grafana.com ID: 15853 
+    - you might need to do some tweak
+- this is what you got at last:
+
+![from repo](img/img0.png)
+
+- in case you need to reset admin password (default admin/admin), attach to your grafana container, issue cli command:
+```bash
+grafana-cli admin reset-admin-password admin
+```
+
+
+
+
+
+
 
 ### Debug:
 ```bash
@@ -98,7 +202,3 @@ advertising type:  PVVX(custom, temp two digits after dot, also use later MiTemp
 ./LYWSD03MMC.py -p
 curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&precision=s --data-binary "sensor_hby,sensorname=HBY_livingroom temperature=28.3,humidity=77,voltage=2.95"
 ```
-
-### (8) grafana
-- this is optional
-- this is optional
