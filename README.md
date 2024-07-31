@@ -209,7 +209,7 @@ curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&prec
 # readme.txt
 
 # if bluetooth device is missing
-# reboot it (this did happened once)
+# reboot it (this did happen once)
 
 # check process
 ps -ef | grep LYWSD03MMC | grep devicelistfile_hby
