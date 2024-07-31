@@ -202,3 +202,22 @@ grafana-cli admin reset-admin-password admin
 ./LYWSD03MMC.py -p
 curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&precision=s --data-binary "sensor_hby,sensorname=HBY_livingroom temperature=28.3,humidity=77,voltage=2.95"
 ```
+
+
+
+```bash
+# readme.txt
+
+# if bluetooth device is missing
+# reboot it (this did happened once)
+
+# check process
+ps -ef | grep LYWSD03MMC | grep devicelistfile_hby
+
+# check log
+tail -f $HOME/_ai_logs/MiTemperature2/LYWSD03MMC_restart.log # restart log
+tail -f $HOME/_ai_logs/MiTemperature2/LYWSD03MMC.log # bt log
+
+# cron
+10 5 * * * $HOME/life_codes/MiTemperature2/restart_LYWSD03MMC.sh >> $HOME/_ai_logs/MiTemperature2/LYWSD03MMC_restart.log 2>&1
+```
