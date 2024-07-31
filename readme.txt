@@ -1,5 +1,8 @@
 # readme.txt
 
+# if bluetooth device is missing
+# reboot it (this did happened once)
+
 # check process
 ps -ef | grep LYWSD03MMC | grep devicelistfile_hby
 
