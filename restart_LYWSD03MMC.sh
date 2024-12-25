@@ -1,7 +1,7 @@
 #!/bin/bash
 NOW=$(date +"%Y-%m-%d %H:%M:%S")
 #
-ff_pid=$(ps -ef | grep LYWSD03MMC | grep devicelistfile_hby | grep -v 'grep' | awk '{print $2}')
+ff_pid=$(ps -ef | grep LYWSD03MMC | grep devicelistfile_hq | grep -v 'grep' | awk '{print $2}')
 kill -9 $ff_pid
 echo $NOW 'stop LYWSD03MMC.sh' $ff_pid
 #
