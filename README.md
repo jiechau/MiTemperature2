@@ -15,7 +15,7 @@ https://github.com/JsBergbau/MiTemperature2
 - config and set up every thermometer (7)
 - setting up Raspberry Pi (1)
 - install necessary packages (incl. python) (2)
-- manually scan bt signals, write down, ready to update to 'devicelistfile_hby' (3) 
+- manually scan bt signals, write down, ready to update to 'devicelistfile_hq' (3) 
 - use user account to setup python env and config MiTemperature2 (4)(5)
 - run the program LYWSD03MMC.sh (6)
 
@@ -64,8 +64,8 @@ sudo setcap cap_net_raw,cap_net_admin+eip $(eval readlink -f `which python3`)
 cd
 git clone https://github.com/jiechau/MiTemperature2.git
 cd MiTemperature2
-cp devicelistfile_example_hby devicelistfile_hby
-vi devicelistfile_hby # the bt address found in (3)
+cp devicelistfile_example devicelistfile_hq
+vi devicelistfile_hq # the bt address found in (3)
 cp config_secrets_example_MiTemperature2.txt config_secrets.txt
 vi config_secrets.txt # your secret info about influxdb in (8)
 ```
@@ -139,7 +139,7 @@ SET PASSWORD FOR "grafana" = 'grafana'
 ```bash
 curl -i -XPOST 'http://<ip>:8086/write?db=home' \
 --user 'grafana:grafana' \
---data-binary 'sensor_hby,sensorname=HBY_bedroom temperature=25.5,humidity=68,voltage=2.998' 
+--data-binary 'sensor_hq,sensorname=HQ_bedroom temperature=25.5,humidity=68,voltage=2.998' 
 ```
 
 #### Grafana
@@ -200,7 +200,7 @@ grafana-cli admin reset-admin-password admin
 ```bash
 ./LYWSD03MMC.py -d A4:C1:38:57:38:9F -r -b
 ./LYWSD03MMC.py -p
-curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&precision=s --data-binary "sensor_hby,sensorname=HBY_livingroom temperature=28.3,humidity=77,voltage=2.95"
+curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&precision=s --data-binary "sensor_hq,sensorname=HQ_livingroom temperature=28.3,humidity=77,voltage=2.95"
 ```
 
 
@@ -212,7 +212,7 @@ curl -i -u "<USERNAME>:<PASSWORD>" -XPOST http://<IP>:<PORT>/write?db=home\&prec
 # reboot it (this did happen once)
 
 # check process
-ps -ef | grep LYWSD03MMC | grep devicelistfile_hby
+ps -ef | grep LYWSD03MMC | grep devicelistfile_hq
 
 # check log
 tail -f $HOME/_ai_logs/MiTemperature2/LYWSD03MMC_restart.log # restart log
