@@ -4,7 +4,7 @@
 # reboot it (this did happened once)
 
 # check process
-ps -ef | grep LYWSD03MMC | grep devicelistfile_hby
+ps -ef | grep LYWSD03MMC | grep devicelistfile_hq
 
 # check log
 tail -f $HOME/_ai_logs/MiTemperature2/LYWSD03MMC_restart.log # restart log

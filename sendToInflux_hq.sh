@@ -15,7 +15,7 @@
 
 curl -i -u "$pw" -XPOST http://$pi:$pp/write?db=home\&precision=s --data-binary "$pm,sensorname=$2 temperature=$3,humidity=$4,voltage=$5"
 
-#echo "$1,sensor_hby,sensorname=$2 temperature=$3,humidity=$4,voltage=$5,$6" >> /tmp/pi.log
+#echo "$1,sensor_hq,sensorname=$2 temperature=$3,humidity=$4,voltage=$5,$6" >> /tmp/pi.log
 
 
 mkdir -p /tmp/sensor
