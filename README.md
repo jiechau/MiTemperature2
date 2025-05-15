@@ -58,14 +58,14 @@ pip3 install -r requirements.txt
 #pip3 install pybluez pycryptodomex
 # ( or install by hand)
 # apt-get install python3-bluez
+
+sudo setcap cap_net_raw,cap_net_admin+eip $(eval readlink -f `which python3`)
 ```
 
 ### (5) user MiTemperature2
 ```bash
 # under venv '.venv'
 sudo setcap cap_net_raw,cap_net_admin+eip $(eval readlink -f `which python3`)
-cd
-git clone https://github.com/jiechau/MiTemperature2.git
 cd MiTemperature2
 cp devicelistfile_example devicelistfile_hq
 vi devicelistfile_hq # the bt address found in (3)
