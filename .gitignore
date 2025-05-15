@@ -1,6 +1,7 @@
 config_secrets.txt
-venv
+.venv
 .vscode
 logs/
 __pycache__/
 *.py[cod]
+.DS_Store

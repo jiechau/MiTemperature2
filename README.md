@@ -46,20 +46,23 @@ sudo hcitool lescan
 
 ### (4) user
 ```bash
-mkdir -p $HOME/venv; cd $HOME/venv
-/usr/bin/python3.9 -m venv --system-site-packages py39bt
-source py39bt/bin/activate
+git clone https://github.com/jiechau/MiTemperature2.git
+cd MiTemperature2
+/usr/bin/python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
 pip3 install --upgrade pip
 # use requirements
-pip3 install -r py39bt.pi3b.bullseye.requirements.txt
+pip3 install -r requirements.txt
 # ( or install by hand)
 #pip3 install bluepy
 #pip3 install pybluez pycryptodomex
+# ( or install by hand)
+# apt-get install python3-bluez
 ```
 
 ### (5) user MiTemperature2
 ```bash
-# under venv 'py39bt'
+# under venv '.venv'
 sudo setcap cap_net_raw,cap_net_admin+eip $(eval readlink -f `which python3`)
 cd
 git clone https://github.com/jiechau/MiTemperature2.git
@@ -74,7 +77,10 @@ vi config_secrets.txt # your secret info about influxdb in (8)
 ```bash
 . LYWSD03MMC.sh
 ```
-
+add cron
+```
+10 5 * * * $HOME/life_codes/MiTemperature2/restart_LYWSD03MMC.sh >> $HOME/_ai_logs/MiTemperature2/LYWSD03MMC_restart.log 2>&1
+```
 <br/><br/>
 
 # misc
